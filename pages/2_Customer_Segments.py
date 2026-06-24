@@ -66,6 +66,8 @@ with col_left:
             color="Segment",
             color_discrete_map=SEGMENT_COLORS,
             opacity=0.65,
+            log_x=True,
+            log_y=True,
             template="plotly_white",
             labels={
                 "Frequency": "Order frequency (# invoices)",
@@ -77,12 +79,8 @@ with col_left:
         
         fig_scatter.update_traces(marker=dict(size=5))  # Small, uniform dots — NOT bubbles
         
+        fig_scatter.update_layout(**CHART_LAYOUT)
         fig_scatter.update_layout(
-            plot_bgcolor="#FFFFFF",
-            paper_bgcolor="#FFFFFF",
-            font=dict(family="sans-serif", color="#1E293B"),
-            title=dict(font=dict(size=14, weight="normal")),
-            margin=dict(t=40, b=40, l=50, r=20),
             legend=dict(
                 orientation="v",
                 yanchor="top",
