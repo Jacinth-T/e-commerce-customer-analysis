@@ -106,10 +106,3 @@ project05_ecommerce/
 - **Columns:** InvoiceNo, StockCode, Description, Quantity, InvoiceDate, UnitPrice, CustomerID, Country
 
 ---
-
-## 🧠 What I Learned
-
-- **RFM Analysis** is a powerful customer segmentation technique that uses three behavioral metrics (Recency, Frequency, Monetary) to group customers into actionable segments like "Champions" and "At Risk."
-- **SQL aggregation** with SQLite provides a lightweight but effective way to store and query processed data without needing a full database server.
-- **Streamlit + Plotly** make it straightforward to build interactive, professional-looking dashboards entirely in Python — no HTML/CSS/JS knowledge required.
-- Data cleaning is often the most time-consuming part of any analytics project — handling nulls, cancelled orders, and type conversions took significant effort but dramatically improved data quality.
