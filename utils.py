@@ -52,6 +52,29 @@ def inject_css():
         max-width: 1200px !important;
     }
 
+    /* Style the Plotly Notifier Box ("Double-click to zoom back out") */
+    .plotly-notifier .notifier-note {
+        background-color: var(--secondary-background-color) !important;
+        color: var(--text-color) !important;
+        border-radius: 8px !important;
+        border: 1px solid rgba(128, 128, 128, 0.2) !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+        font-family: 'Inter', sans-serif !important;
+        padding: 8px 14px !important;
+        font-size: 13px !important;
+        backdrop-filter: blur(8px) !important;
+    }
+    .plotly-notifier .notifier-close {
+        color: var(--text-color) !important;
+        opacity: 0.5 !important;
+        right: 4px !important;
+        top: 4px !important;
+        transition: opacity 0.2s ease !important;
+    }
+    .plotly-notifier .notifier-close:hover {
+        opacity: 1 !important;
+    }
+
     /* KPI Cards CSS - Using CSS Variables for automatic Light/Dark mode toggling */
     .kpi-card {
         background: var(--secondary-background-color);
