@@ -12,17 +12,8 @@ SEGMENT_COLORS = {
 }
 
 CHART_LAYOUT = dict(
-    template="plotly_white",
-    plot_bgcolor="rgba(0,0,0,0)",
-    paper_bgcolor="rgba(0,0,0,0)",
-    font=dict(family="'Inter', sans-serif", size=12, color="#431407"),
     margin=dict(t=40, b=40, l=50, r=20),
     title=dict(font=dict(size=14)),
-    hoverlabel=dict(
-        bgcolor="#431407",
-        font_color="#FFFFFF",
-        font_size=12,
-    ),
 )
 
 def inject_css():
@@ -40,30 +31,17 @@ def inject_css():
         font-family: 'Material Symbols Rounded', 'Material Icons', sans-serif !important;
     }
 
-    /* Sidebar — dark rich orange/brown gradient */
-    [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #431407 0%, #7c2d12 100%) !important;
-    }
-    [data-testid="stSidebar"] .stMarkdown p,
-    [data-testid="stSidebar"] .stMarkdown a,
-    [data-testid="stSidebar"] label {
-        color: rgba(255, 255, 255, 0.75) !important;
-        font-size: 13px !important;
-    }
+    /* Sidebar Navigation Links */
     [data-testid="stSidebarNav"] a {
-        color: rgba(255, 255, 255, 0.65) !important;
-        font-size: 13px !important;
         transition: all 0.2s ease;
     }
     [data-testid="stSidebarNav"] a:hover {
-        background: rgba(255,255,255,0.05) !important;
-        color: #fff !important;
+        background: rgba(128,128,128,0.1) !important;
     }
     [data-testid="stSidebarNav"] a[aria-current="page"] {
-        color: #fff !important;
         font-weight: 500 !important;
-        background: rgba(255,255,255,0.1) !important;
-        border-left: 3px solid #F97316 !important;
+        background: rgba(128,128,128,0.15) !important;
+        border-left: 3px solid var(--primary-color) !important;
         border-radius: 0 !important;
     }
 
@@ -74,18 +52,18 @@ def inject_css():
         max-width: 1200px !important;
     }
 
-    /* KPI Cards CSS */
+    /* KPI Cards CSS - Using CSS Variables for automatic Light/Dark mode toggling */
     .kpi-card {
-        background: #ffffff;
-        border: 1px solid #ffedd5;
+        background: var(--secondary-background-color);
+        border: 1px solid rgba(128, 128, 128, 0.2);
         border-radius: 12px;
         padding: 16px 20px;
-        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
         transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
     .kpi-card:hover {
         transform: translateY(-3px);
-        box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
     }
 
     /* Hide default metric borders */
@@ -95,15 +73,15 @@ def inject_css():
 
     /* Container Card Styling for Charts */
     [data-testid="stVerticalBlockBorderWrapper"] {
-        background-color: #ffffff;
+        background-color: var(--secondary-background-color) !important;
         border-radius: 12px !important;
-        border: 1px solid #ffedd5 !important;
-        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.03) !important;
+        border: 1px solid rgba(128, 128, 128, 0.2) !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
     }
 
     /* Dataframe table styling */
     [data-testid="stDataFrame"] {
-        border: 1px solid #ffedd5 !important;
+        border: 1px solid rgba(128, 128, 128, 0.2) !important;
         border-radius: 8px !important;
     }
     </style>
@@ -123,10 +101,10 @@ def kpi_card(title: str, value: str, subtitle: str, icon: str, accent_color: str
     <div class="kpi-card" style="border-top: 3px solid {accent_color};">
         <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
             <span style="font-size: 16px;">{icon}</span>
-            <span style="font-size: 12px; font-weight: 500; color: #7c2d12;">{title}</span>
+            <span style="font-size: 12px; font-weight: 500; color: var(--text-color); opacity: 0.8;">{title}</span>
         </div>
-        <p style="font-size: 28px; font-weight: 700; color: #431407; margin: 0 0 4px; letter-spacing: -0.5px;">{value}</p>
-        <p style="font-size: 11px; color: #9a3412; margin: 0; font-weight: 400;">{subtitle}</p>
+        <p style="font-size: 28px; font-weight: 700; color: var(--text-color); margin: 0 0 4px; letter-spacing: -0.5px;">{value}</p>
+        <p style="font-size: 11px; color: var(--text-color); opacity: 0.6; margin: 0; font-weight: 400;">{subtitle}</p>
     </div>
     """
 
@@ -158,8 +136,8 @@ def section_card(title: str, subtitle: str = "") -> None:
     """Write a styled section header."""
     header = f"""
     <div style="margin-bottom: 8px;">
-        <p style="font-size: 15px; font-weight: 600; color: #431407; margin: 0 0 2px;">{title}</p>
-        {'<p style="font-size: 12px; color: #9a3412; margin: 0;">' + subtitle + '</p>' if subtitle else ''}
+        <p style="font-size: 15px; font-weight: 600; color: var(--text-color); margin: 0 0 2px;">{title}</p>
+        {'<p style="font-size: 12px; color: var(--text-color); opacity: 0.6; margin: 0;">' + subtitle + '</p>' if subtitle else ''}
     </div>
     """
     st.markdown(header, unsafe_allow_html=True)
