@@ -14,7 +14,7 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from database import get_kpi_summary, get_transactions, query_to_df
-from utils import inject_css, render_kpi_row, render_sidebar
+from utils import inject_css, render_kpi_row, render_sidebar, MODULE_INFO
 
 # --- Page Configuration (must be first Streamlit command) ---
 st.set_page_config(
@@ -83,3 +83,61 @@ st.markdown(
     - 🌍 **Regional Revenue** — Geographic performance breakdown
     """
 )
+
+st.divider()
+
+# --- System Modules Section ---
+st.subheader("🧩 System Modules")
+st.markdown(
+    "The data pipeline is composed of four discrete modules, each responsible "
+    "for a specific stage of the analysis. The graphs and tables on each page "
+    "are powered by these modules."
+)
+
+# Render module cards in a 2x2 grid
+module_page_map = {
+    "alpha": {
+        "desc": "Standardizes transaction receipt rows, invoice tables, and website order data.",
+        "pages": "📊 Home (KPI Cards) · 📈 Purchase Timeline",
+        "icon": "📥",
+    },
+    "beta": {
+        "desc": "Measures customer value boundaries using Recency, Frequency, and Monetary metrics.",
+        "pages": "👥 Customer Segments",
+        "icon": "📊",
+    },
+    "gamma": {
+        "desc": "Tally order totals across the catalog to trace product performance trends.",
+        "pages": "📦 Product Analytics",
+        "icon": "📦",
+    },
+    "delta": {
+        "desc": "Tracks customer orders by country to monitor geographic growth.",
+        "pages": "🌍 Regional Revenue",
+        "icon": "🌍",
+    },
+}
+
+col_a, col_b = st.columns(2)
+for idx, (key, extra) in enumerate(module_page_map.items()):
+    info = MODULE_INFO[key]
+    card_html = f"""
+    <div style="
+        background: {info['bg']};
+        border-left: 4px solid {info['color']};
+        border-radius: 0 10px 10px 0;
+        padding: 14px 18px;
+        margin-bottom: 2px;
+    ">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+            <span style="font-size:15px;">{extra['icon']}</span>
+            <span style="font-size:14px;font-weight:700;color:{info['color']};">{info['label']}</span>
+            <span style="font-size:12px;color:var(--text-color);opacity:0.6;">·</span>
+            <span style="font-size:12px;font-weight:500;color:var(--text-color);opacity:0.8;">{info['name']}</span>
+        </div>
+        <p style="font-size:12px;color:var(--text-color);opacity:0.7;margin:0 0 8px;line-height:1.5;">{extra['desc']}</p>
+        <p style="font-size:11px;font-weight:600;color:var(--text-color);opacity:0.55;margin:0;letter-spacing:0.3px;">USED IN → {extra['pages']}</p>
+    </div>
+    """
+    with (col_a if idx % 2 == 0 else col_b):
+        st.markdown(card_html, unsafe_allow_html=True)

@@ -15,7 +15,7 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from database import get_top_products, query_to_df
-from utils import inject_css, CHART_LAYOUT, section_card, render_sidebar
+from utils import inject_css, CHART_LAYOUT, section_card, render_sidebar, module_banner
 
 # --- Page Configuration (must be first Streamlit command) ---
 st.set_page_config(
@@ -28,6 +28,7 @@ render_sidebar()
 
 # --- Page Header ---
 st.title("📦 Product Analytics — Catalog Revenue Matrix")
+module_banner("gamma")
 st.markdown(
     "Explore which products drive the most revenue and which move the highest "
     "volume of units.  Use the search box below to look up any product in the "
@@ -55,7 +56,7 @@ col_left, col_right = st.columns(2)
 # --- Chart 1: Top 10 by Revenue (horizontal bar) ---
 with col_left:
     with st.container(border=True):
-        section_card("Top 10 Products by Revenue")
+        section_card("Product Revenue Ranking — Top 10", module="gamma")
         top_revenue = product_summary.nlargest(10, "TotalRevenue")
 
         fig_rev = px.bar(
@@ -63,7 +64,7 @@ with col_left:
             x="TotalRevenue",
             y="Description",
             orientation="h",
-            title="Top 10 Products by Revenue",
+            title="Product Revenue Ranking — Top 10",
             color="TotalRevenue",
             color_continuous_scale="Viridis",
             template="plotly_white",
@@ -80,7 +81,7 @@ with col_left:
 # --- Chart 2: Top 10 by Quantity Sold (horizontal bar) ---
 with col_right:
     with st.container(border=True):
-        section_card("Top 10 Products by Units Sold")
+        section_card("Product Volume Ranking — Top 10", module="gamma")
         top_qty = product_summary.nlargest(10, "TotalQuantitySold")
 
         fig_qty = px.bar(
@@ -88,7 +89,7 @@ with col_right:
             x="TotalQuantitySold",
             y="Description",
             orientation="h",
-            title="Top 10 Products by Units Sold",
+            title="Product Volume Ranking — Top 10",
             color="TotalQuantitySold",
             color_continuous_scale="Plasma",
             template="plotly_white",
@@ -108,7 +109,7 @@ st.divider()
 # Searchable Product Table
 # ------------------------------------------------------------------
 with st.container(border=True):
-    section_card("Product Catalog Search")
+    section_card("Product Catalog Search", module="gamma")
 
     search_term = st.text_input(
         "Search products by description",

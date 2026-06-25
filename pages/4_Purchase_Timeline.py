@@ -16,7 +16,7 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from database import get_monthly_revenue
-from utils import inject_css, CHART_LAYOUT, section_card, render_sidebar
+from utils import inject_css, CHART_LAYOUT, section_card, render_sidebar, module_banner
 
 # --- Page Configuration (must be first Streamlit command) ---
 st.set_page_config(
@@ -29,6 +29,7 @@ render_sidebar()
 
 # --- Page Header ---
 st.title("📈 Purchase Timeline — Monthly Trends")
+module_banner("alpha")
 st.markdown(
     "This page tracks **temporal purchasing patterns** across the dataset period. "
     "Monthly aggregations reveal seasonal trends, growth trajectories, and "
@@ -52,13 +53,13 @@ except Exception as e:
 # Chart 1: Monthly Revenue — Line Chart
 # ------------------------------------------------------------------
 with st.container(border=True):
-    section_card("Monthly Revenue Over Time")
+    section_card("Transaction Revenue Over Time", module="alpha")
 
     fig_line = px.line(
         monthly,
         x="Month",
         y="Revenue",
-        title="Monthly Revenue Over Time",
+        title="Transaction Revenue Over Time",
         template="plotly_white",
         markers=True,
     )
@@ -88,13 +89,13 @@ st.divider()
 # Chart 2: Monthly Order Volume — Bar Chart
 # ------------------------------------------------------------------
 with st.container(border=True):
-    section_card("Monthly Order Volume")
+    section_card("Transaction Order Volume by Month", module="alpha")
 
     fig_bar = px.bar(
         monthly,
         x="Month",
         y="OrderCount",
-        title="Monthly Order Volume",
+        title="Transaction Order Volume by Month",
         color="OrderCount",
         color_continuous_scale="Blues",
         template="plotly_white",

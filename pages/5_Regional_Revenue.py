@@ -17,7 +17,7 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from database import get_regional_data
-from utils import inject_css, CHART_LAYOUT, section_card, render_sidebar
+from utils import inject_css, CHART_LAYOUT, section_card, render_sidebar, module_banner
 
 # --- Page Configuration (must be first Streamlit command) ---
 st.set_page_config(
@@ -30,6 +30,7 @@ render_sidebar()
 
 # --- Page Header ---
 st.title("🌍 Regional Revenue — Geographic Performance")
+module_banner("delta")
 st.markdown(
     "Explore how revenue is distributed across the retailer's international "
     "customer base.  Because the company is **UK-based**, the United Kingdom "
@@ -66,7 +67,7 @@ col_left, col_right = st.columns(2)
 # --- Chart 1: Horizontal Bar — Top 15 Countries by Revenue ---
 with col_left:
     with st.container(border=True):
-        section_card("Revenue by Country (Top 15)")
+        section_card("Regional Revenue by Country (Top 15)", module="delta")
         top_15 = regional.head(15)
 
         fig_bar = px.bar(
@@ -74,7 +75,7 @@ with col_left:
             x="TotalRevenue",
             y="Country",
             orientation="h",
-            title="Revenue by Country (Top 15)",
+            title="Regional Revenue by Country (Top 15)",
             color="TotalRevenue",
             color_continuous_scale="Teal",
             template="plotly_white",
@@ -91,13 +92,13 @@ with col_left:
 # --- Chart 2: Choropleth — Global Revenue Distribution ---
 with col_right:
     with st.container(border=True):
-        section_card("Global Revenue Distribution")
+        section_card("Regional Revenue — Global Distribution Map", module="delta")
         fig_map = px.choropleth(
             regional,
             locations="Country",
             locationmode="country names",
             color="TotalRevenue",
-            title="Global Revenue Distribution",
+            title="Regional Revenue — Global Distribution Map",
             color_continuous_scale="YlOrRd",
             template="plotly_white",
             projection="natural earth",
@@ -115,7 +116,7 @@ st.divider()
 # Full Country Data Table
 # ------------------------------------------------------------------
 with st.container(border=True):
-    section_card("Full Country Revenue Breakdown")
+    section_card("Regional Revenue — Full Country Breakdown", module="delta")
     st.dataframe(
         regional.sort_values("TotalRevenue", ascending=False),
         use_container_width=True,

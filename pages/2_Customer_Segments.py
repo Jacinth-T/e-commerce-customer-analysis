@@ -16,7 +16,7 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from database import get_rfm_scores
-from utils import inject_css, SEGMENT_COLORS, CHART_LAYOUT, section_card, render_sidebar
+from utils import inject_css, SEGMENT_COLORS, CHART_LAYOUT, section_card, render_sidebar, module_banner
 
 # --- Page Configuration (must be first Streamlit command) ---
 st.set_page_config(
@@ -29,6 +29,7 @@ render_sidebar()
 
 # --- Page Header ---
 st.title("👥 Customer Segments — RFM Analysis")
+module_banner("beta")
 st.markdown(
     "**RFM Analysis** segments customers based on three behavioural dimensions: "
     "**Recency** (how recently they purchased), **Frequency** (how often they buy), "
@@ -57,8 +58,8 @@ col_left, col_right = st.columns(2)
 # --- Chart 1: Scatter / Bubble — Frequency vs Monetary ---
 with col_left:
     with st.container(border=True):
-        section_card("Customer segments by frequency & monetary value", 
-                     "Each dot represents one customer · colored by RFM segment")
+        section_card("RFM Segmentation — Frequency vs. Monetary Value", 
+                     "Each dot represents one customer · colored by RFM segment", module="beta")
         
         fig_scatter = px.scatter(
             rfm,
@@ -75,7 +76,7 @@ with col_left:
                 "Monetary": "Total spend (£)",
                 "Segment": "Segment"
             },
-            title="Customer segments — frequency vs. monetary value"
+            title="RFM Segmentation — Frequency vs. Monetary Value"
         )
         
         fig_scatter.update_traces(marker=dict(size=5))  # Small, uniform dots — NOT bubbles
@@ -96,7 +97,7 @@ with col_left:
 
 with col_right:
     with st.container(border=True):
-        section_card("Number of customers per segment")
+        section_card("RFM Segment Distribution", module="beta")
         # Count customers in each segment
         segment_counts = (
             rfm["Segment"]
@@ -114,7 +115,7 @@ with col_right:
             y="Count",
             color="Segment",
             color_discrete_map=SEGMENT_COLORS,
-            title="Number of Customers per Segment",
+            title="RFM Segment Distribution",
             template="plotly_white",
             text_auto=True,
         )
@@ -132,7 +133,7 @@ st.divider()
 # Summary Table — Segment-level aggregated statistics
 # ------------------------------------------------------------------
 with st.container(border=True):
-    section_card("Customer Segment Data", "Full RFM scores and segment classifications")
+    section_card("RFM Customer Segment Data", "Full RFM scores and segment classifications", module="beta")
     
     # Color mapping for badges
     badge_colors = {

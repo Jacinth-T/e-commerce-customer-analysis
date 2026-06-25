@@ -155,15 +155,109 @@ def render_kpi_row(total_customers, total_revenue, total_orders, countries):
             "🌍", "#c2410c"
         ), unsafe_allow_html=True)
 
-def section_card(title: str, subtitle: str = "") -> None:
-    """Write a styled section header."""
+def section_card(title: str, subtitle: str = "", module: str = "") -> None:
+    """Write a styled section header with optional module badge."""
+    badge_html = ""
+    if module:
+        badge_html = _module_badge_html(module)
     header = f"""
     <div style="margin-bottom: 8px;">
-        <p style="font-size: 15px; font-weight: 600; color: var(--text-color); margin: 0 0 2px;">{title}</p>
-        {'<p style="font-size: 12px; color: var(--text-color); opacity: 0.6; margin: 0;">' + subtitle + '</p>' if subtitle else ''}
+        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <p style="font-size: 15px; font-weight: 600; color: var(--text-color); margin: 0;">{title}</p>
+            {badge_html}
+        </div>
+        {'<p style="font-size: 12px; color: var(--text-color); opacity: 0.6; margin: 4px 0 0 0;">' + subtitle + '</p>' if subtitle else ''}
     </div>
     """
     st.markdown(header, unsafe_allow_html=True)
+
+
+# ---------------------------------------------------------------------------
+# Module badge system — maps PDF module names to styled pill badges
+# ---------------------------------------------------------------------------
+
+# Module metadata matching the PDF exactly
+MODULE_INFO = {
+    "alpha": {
+        "label": "Module Alpha",
+        "name": "Consumer Log Handler",
+        "color": "#F97316",      # Orange
+        "bg": "rgba(249,115,22,0.12)",
+    },
+    "beta": {
+        "label": "Module Beta",
+        "name": "RFM Segmentation Core",
+        "color": "#8B5CF6",      # Purple
+        "bg": "rgba(139,92,246,0.12)",
+    },
+    "gamma": {
+        "label": "Module Gamma",
+        "name": "Product Purchase Analytics Module",
+        "color": "#10B981",      # Emerald
+        "bg": "rgba(16,185,129,0.12)",
+    },
+    "delta": {
+        "label": "Module Delta",
+        "name": "Regional Revenue Mapping Subsystem",
+        "color": "#3B82F6",      # Blue
+        "bg": "rgba(59,130,246,0.12)",
+    },
+}
+
+
+def _module_badge_html(module_key: str) -> str:
+    """Return inline HTML for a small module pill badge."""
+    info = MODULE_INFO.get(module_key, {})
+    if not info:
+        return ""
+    return (
+        f'<span style="display:inline-flex;align-items:center;gap:5px;'
+        f'background:{info["bg"]};border:1px solid {info["color"]}33;'
+        f'border-radius:6px;padding:2px 10px;font-size:11px;font-weight:600;'
+        f'color:{info["color"]};letter-spacing:0.3px;white-space:nowrap;">'
+        f'{info["label"]}'
+        f'</span>'
+    )
+
+
+def module_banner(module_key: str) -> None:
+    """Render a full-width module attribution banner below the page title."""
+    info = MODULE_INFO.get(module_key)
+    if not info:
+        return
+    st.markdown(f"""
+    <div style="
+        display: flex; align-items: center; gap: 12px;
+        background: {info['bg']}; border-left: 4px solid {info['color']};
+        border-radius: 0 8px 8px 0; padding: 10px 16px; margin-bottom: 4px;
+    ">
+        <span style="font-size: 13px; font-weight: 700; color: {info['color']};">{info['label']}</span>
+        <span style="font-size: 12px; color: var(--text-color); opacity: 0.75;">·</span>
+        <span style="font-size: 12px; color: var(--text-color); opacity: 0.75;">{info['name']}</span>
+    </div>
+    """, unsafe_allow_html=True)
+
+
+def module_banner_multi(module_keys: list) -> None:
+    """Render a banner showing multiple modules powering a page."""
+    badges = ""
+    for key in module_keys:
+        info = MODULE_INFO.get(key)
+        if not info:
+            continue
+        badges += (
+            f'<div style="display:flex;align-items:center;gap:8px;'
+            f'background:{info["bg"]};border-left:3px solid {info["color"]};'
+            f'border-radius:0 6px 6px 0;padding:7px 14px;">'
+            f'<span style="font-size:12px;font-weight:700;color:{info["color"]};">{info["label"]}</span>'
+            f'<span style="font-size:11px;color:var(--text-color);opacity:0.7;">{info["name"]}</span>'
+            f'</div>'
+        )
+    st.markdown(f"""
+    <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:4px;">
+        {badges}
+    </div>
+    """, unsafe_allow_html=True)
 
 def render_sidebar():
     """Renders the common sidebar elements across all pages."""
