@@ -1,4 +1,4 @@
-# utils.py
+# utils.py — v2 (module badge system)
 import streamlit as st
 
 SEGMENT_COLORS = {
