@@ -14,7 +14,7 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from database import get_kpi_summary, get_transactions, query_to_df
-from utils import inject_css, render_kpi_row
+from utils import inject_css, render_kpi_row, render_sidebar
 
 # --- Page Configuration (must be first Streamlit command) ---
 st.set_page_config(
@@ -25,19 +25,7 @@ st.set_page_config(
 inject_css()
 
 # --- Sidebar ---
-st.sidebar.title("🛒 E-Commerce Dashboard")
-st.sidebar.markdown("Navigate using the sidebar pages above.")
-st.sidebar.divider()
-st.sidebar.markdown("---")
-st.sidebar.markdown("""
-<div style="font-size: 10px; color: rgba(255,255,255,0.35); line-height: 1.6;">
-    <strong style="color: rgba(255,255,255,0.5); font-size: 10px;">Dataset</strong><br>
-    UCI Online Retail<br>
-    Dec 2010 – Dec 2011<br><br>
-    <strong style="color: rgba(255,255,255,0.5); font-size: 10px;">Project 05</strong><br>
-    Data Analytics Capstone
-</div>
-""", unsafe_allow_html=True)
+render_sidebar()
 
 # --- Main Page Title ---
 st.title("🛒 E-Commerce Customer Behavior Analysis")

@@ -17,7 +17,7 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from database import get_regional_data
-from utils import inject_css, CHART_LAYOUT, section_card
+from utils import inject_css, CHART_LAYOUT, section_card, render_sidebar
 
 # --- Page Configuration (must be first Streamlit command) ---
 st.set_page_config(
@@ -26,6 +26,7 @@ st.set_page_config(
     layout="wide",
 )
 inject_css()
+render_sidebar()
 
 # --- Page Header ---
 st.title("🌍 Regional Revenue — Geographic Performance")

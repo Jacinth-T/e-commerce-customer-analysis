@@ -141,3 +141,22 @@ def section_card(title: str, subtitle: str = "") -> None:
     </div>
     """
     st.markdown(header, unsafe_allow_html=True)
+
+def render_sidebar():
+    """Renders the common sidebar elements across all pages."""
+    st.sidebar.title("🛒 E-Commerce Dashboard")
+    st.sidebar.markdown("Navigate using the sidebar pages above.")
+    st.sidebar.divider()
+    
+    st.sidebar.markdown("💡 **Pro Tip**: Hover over any graph to interact! You can drag to zoom, double-click to reset, and click the arrows icon in the top right to view it in fullscreen.")
+    
+    st.sidebar.markdown("---")
+    st.sidebar.markdown("""
+    <div style="font-size: 10px; color: var(--text-color); opacity: 0.6; line-height: 1.6;">
+        <strong style="color: var(--text-color); font-size: 10px; opacity: 0.8;">Dataset</strong><br>
+        UCI Online Retail<br>
+        Dec 2010 – Dec 2011<br><br>
+        <strong style="color: var(--text-color); font-size: 10px; opacity: 0.8;">Project 05</strong><br>
+        Data Analytics Capstone
+    </div>
+    """, unsafe_allow_html=True)
